@@ -30,14 +30,10 @@ export default function CaseStudies() {
             href="/gallery"
             className="sv-case-card group relative overflow-hidden sv-clip-card-md block"
             style={{ aspectRatio: "3/4" }}
-            aria-label={`View case study: ${s.caseStudyTitle}`}
+            aria-label={`View case study: ${s.title}`}
           >
             {/* Image */}
-            <img
-              src={s.caseStudyImage}
-              alt={s.caseStudyTitle}
-              className="sv-case-img absolute inset-0 w-full h-full"
-            />
+            <img src={s.posterSrc} alt={s.title} className="sv-case-img absolute inset-0 w-full h-full" />
             <div className="sv-case-dark" aria-hidden />
 
             {/* Gradient overlay */}
@@ -46,28 +42,29 @@ export default function CaseStudies() {
             {/* Top badge */}
             <div className="absolute top-4 left-4 z-10">
               <div className="sv-glass-strong sv-clip-badge inline-flex items-center gap-2 px-3 py-1.5">
-                <s.icon className="w-3 h-3" style={{ color: s.accentFrom }} />
+                <s.icon className="w-3 h-3" style={{ color: s.accentColor }} />
                 <span className="text-[10px] font-bold text-white/65 tracking-widest uppercase">{s.title}</span>
               </div>
             </div>
 
             {/* Hover arrow */}
-            <div className="absolute top-4 right-4 z-10 w-8 h-8 sv-clip-play flex items-center justify-center
+            <div
+              className="absolute top-4 right-4 z-10 w-8 h-8 sv-clip-play flex items-center justify-center
                             opacity-0 group-hover:opacity-100 transition-opacity duration-300
                             shadow-[0_8px_24px_rgba(255,107,0,0.5)]"
-              style={{ background: `linear-gradient(135deg, ${s.accentFrom}, ${s.accentTo})` }}
+              style={{ background: s.accentColor }}
             >
               <ArrowUpRight className="w-4 h-4 text-white" />
             </div>
 
             {/* Bottom info */}
             <div className="absolute bottom-0 left-0 right-0 z-10 p-5">
-              <p className="text-[10px] text-white/40 tracking-widest uppercase mb-1">{s.caseStudyClient}</p>
-              <h3 className="text-base font-bold text-white mb-2 leading-tight">{s.caseStudyTitle}</h3>
+              <p className="text-[10px] text-white/40 tracking-widest uppercase mb-1">{s.tagline}</p>
+              <h3 className="text-base font-bold text-white mb-2 leading-tight">{s.title}</h3>
               {/* Result pill */}
               <div className="sv-glass sv-clip-badge inline-flex items-center gap-2 px-3 py-1">
                 <div className="w-1.5 h-1.5 rounded-full bg-[#ffab42] sv-pulse-glow flex-shrink-0" />
-                <span className="text-[10px] text-white/55 font-semibold">{s.caseStudyResult}</span>
+                <span className="text-[10px] text-white/55 font-semibold">{s.stats[0]?.value || "Premium"}</span>
               </div>
             </div>
           </a>
