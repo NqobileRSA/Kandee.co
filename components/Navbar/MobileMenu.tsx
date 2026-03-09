@@ -2,8 +2,7 @@
 import { ArrowUpRight, Phone, Calendar, ChevronDown, Sparkles } from "lucide-react";
 import { glass, diamondClip, GRAD } from "./navStyles";
 import { NAV_LINKS } from "./navConstants";
-import "./MobileMenu.css";
-
+import "./navbar.css";
 interface MobileMenuProps {
   isOpen: boolean;
   onToggle: () => void;
