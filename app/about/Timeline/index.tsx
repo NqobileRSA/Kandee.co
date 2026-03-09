@@ -33,11 +33,7 @@ import { START_YEAR, TOTAL, TIMELINE_DATA, IMAGES } from "./timelineConstants";
 ───────────────────────────────────────────── */
 const textureCache = new Map<string, THREE.CanvasTexture>();
 
-function getTexture(
-  index: number,
-  focused: boolean,
-  maxAniso = 16,
-): THREE.CanvasTexture {
+function getTexture(index: number, focused: boolean, maxAniso = 16): THREE.CanvasTexture {
   const key = `${index}-${focused ? "f" : "b"}`;
   if (textureCache.has(key)) return textureCache.get(key)!;
 
@@ -46,10 +42,7 @@ function getTexture(
   const CRN = 28;
 
   // Render at 2× physical pixels for crisp 4K-quality textures on HiDPI screens
-  const DPR = Math.min(
-    typeof window !== "undefined" ? window.devicePixelRatio : 2,
-    2,
-  );
+  const DPR = Math.min(typeof window !== "undefined" ? window.devicePixelRatio : 2, 2);
   const canvas = document.createElement("canvas");
   canvas.width = W * DPR;
   canvas.height = H * DPR;
@@ -165,9 +158,7 @@ function getTexture(
 
     // Outer border
     angular(W, H, CRN);
-    ctx.strokeStyle = focused
-      ? "rgba(255,160,66,0.38)"
-      : "rgba(255,255,255,0.1)";
+    ctx.strokeStyle = focused ? "rgba(255,160,66,0.38)" : "rgba(255,255,255,0.1)";
     ctx.lineWidth = focused ? 2 : 1.5;
     ctx.stroke();
 
@@ -199,8 +190,8 @@ export default function Timeline() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [activeYear, setActiveYear] = useState(START_YEAR);
-  const [activeTitle, setActiveTitle] = useState(TIMELINE_DATA[0].t);
-  const [activeDesc, setActiveDesc] = useState(TIMELINE_DATA[0].d);
+  const [activeTitle, setActiveTitle] = useState<string>(TIMELINE_DATA[0].t);
+  const [activeDesc, setActiveDesc] = useState<string>(TIMELINE_DATA[0].d);
   const [textVisible, setTextVisible] = useState(true);
 
   const targetRef = useRef(0);
@@ -211,8 +202,7 @@ export default function Timeline() {
   const tiltRef = useRef({ rx: 0, ry: 0 }); // smoothed tilt angles (deg)
   const uvRef = useRef({ ox: 0, oy: 0 }); // smoothed UV offset (0-1 fraction)
 
-  const go = (dir: number) =>
-    setCurrentIndex((p) => Math.max(0, Math.min(TOTAL - 1, p + dir)));
+  const go = (dir: number) => setCurrentIndex((p) => Math.max(0, Math.min(TOTAL - 1, p + dir)));
 
   useEffect(() => {
     targetRef.current = currentIndex / TOTAL;
@@ -252,12 +242,7 @@ export default function Timeline() {
     /* ── Scene / Camera ── */
     const scene = new THREE.Scene();
     scene.fog = new THREE.FogExp2(0x0d0d0d, 0.038);
-    const camera = new THREE.PerspectiveCamera(
-      45,
-      el.clientWidth / el.clientHeight,
-      0.1,
-      100,
-    );
+    const camera = new THREE.PerspectiveCamera(45, el.clientWidth / el.clientHeight, 0.1, 100);
     camera.position.set(0, 0, 16);
 
     /* ── Spiral curve ── */
@@ -266,13 +251,7 @@ export default function Timeline() {
       const t = i / 400;
       const angle = t * Math.PI * 2 * 4;
       const r = 0.5 + Math.pow(t, 1.1) * 7;
-      curvePts.push(
-        new THREE.Vector3(
-          Math.cos(angle) * r,
-          Math.sin(angle) * r,
-          t * 60 - 60,
-        ),
-      );
+      curvePts.push(new THREE.Vector3(Math.cos(angle) * r, Math.sin(angle) * r, t * 60 - 60));
     }
     const curve = new THREE.CatmullRomCurve3(curvePts);
 
@@ -283,31 +262,15 @@ export default function Timeline() {
 
     const basePts = Array.from(
       { length: _baseProto.attributes.position.count },
-      (_, i) =>
-        new THREE.Vector3(
-          _baseProto.attributes.position.getX(i),
-          _baseProto.attributes.position.getY(i),
-          0,
-        ),
+      (_, i) => new THREE.Vector3(_baseProto.attributes.position.getX(i), _baseProto.attributes.position.getY(i), 0),
     );
     const focusPts = Array.from(
       { length: _focusProto.attributes.position.count },
-      (_, i) =>
-        new THREE.Vector3(
-          _focusProto.attributes.position.getX(i),
-          _focusProto.attributes.position.getY(i),
-          0,
-        ),
+      (_, i) => new THREE.Vector3(_focusProto.attributes.position.getX(i), _focusProto.attributes.position.getY(i), 0),
     );
 
-    const baseGeos: THREE.PlaneGeometry[] = Array.from(
-      { length: TOTAL },
-      () => _baseProto.clone() as THREE.PlaneGeometry,
-    );
-    const focusGeos: THREE.PlaneGeometry[] = Array.from(
-      { length: TOTAL },
-      () => _focusProto.clone() as THREE.PlaneGeometry,
-    );
+    const baseGeos: THREE.PlaneGeometry[] = Array.from({ length: TOTAL }, () => _baseProto.clone() as THREE.PlaneGeometry);
+    const focusGeos: THREE.PlaneGeometry[] = Array.from({ length: TOTAL }, () => _focusProto.clone() as THREE.PlaneGeometry);
 
     _baseProto.dispose();
     _focusProto.dispose();
@@ -326,12 +289,7 @@ export default function Timeline() {
       for (let i = 0; i < pts.length; i++) {
         const v = pts[i];
         const angle = v.x / TUBE_R;
-        pos.setXYZ(
-          i,
-          v.x + (TUBE_R * Math.sin(angle) - v.x) * factor,
-          v.y,
-          v.z + (TUBE_R * (1 - Math.cos(angle)) - v.z) * factor,
-        );
+        pos.setXYZ(i, v.x + (TUBE_R * Math.sin(angle) - v.x) * factor, v.y, v.z + (TUBE_R * (1 - Math.cos(angle)) - v.z) * factor);
       }
       pos.needsUpdate = true;
     }
@@ -389,6 +347,7 @@ export default function Timeline() {
     const UV_SHIFT = 0.04; // peak UV offset (fraction of texture space)
 
     function onMouseMove(e: MouseEvent) {
+      if (!el) return;
       const rect = el.getBoundingClientRect();
       const px = e.clientX - rect.left;
       const py = e.clientY - rect.top;
@@ -512,12 +471,7 @@ export default function Timeline() {
           _q.setFromEuler(_e);
 
           // ⑩ Compose tilt quaternion on top of base orientation (YXZ order)
-          _eTilt.set(
-            THREE.MathUtils.degToRad(tiltRef.current.rx),
-            THREE.MathUtils.degToRad(tiltRef.current.ry),
-            0,
-            "YXZ",
-          );
+          _eTilt.set(THREE.MathUtils.degToRad(tiltRef.current.rx), THREE.MathUtils.degToRad(tiltRef.current.ry), 0, "YXZ");
           _qTilt.setFromEuler(_eTilt);
           _q.multiply(_qTilt);
 
@@ -557,8 +511,7 @@ export default function Timeline() {
           _vScl.set(ts, ts, ts);
           c.mesh.scale.lerp(_vScl, LP);
           c.bend += (1 - c.bend) * 0.3;
-          c.mesh.material.opacity =
-            c.t < 0.1 ? c.t / 0.1 : c.t > 0.95 ? (1 - c.t) / 0.05 : 1;
+          c.mesh.material.opacity = c.t < 0.1 ? c.t / 0.1 : c.t > 0.95 ? (1 - c.t) / 0.05 : 1;
 
           // Reset UV when card leaves focus
           if (c.mesh.material.map) {
@@ -566,12 +519,7 @@ export default function Timeline() {
           }
         }
 
-        bendCard(
-          c.mesh.geometry.attributes.position,
-          c.isFocused ? focusPts : basePts,
-          c.bend,
-          c.index,
-        );
+        bendCard(c.mesh.geometry.attributes.position, c.isFocused ? focusPts : basePts, c.bend, c.index);
       }
 
       renderer!.render(scene, camera);
@@ -607,8 +555,7 @@ export default function Timeline() {
       baseGeos.forEach((g) => g.dispose());
       focusGeos.forEach((g) => g.dispose());
       renderer!.dispose();
-      if (el.contains(renderer!.domElement))
-        el.removeChild(renderer!.domElement);
+      if (el.contains(renderer!.domElement)) el.removeChild(renderer!.domElement);
     };
   }, []);
 
@@ -639,9 +586,7 @@ export default function Timeline() {
             {/* Year row */}
             <div className="flex items-center gap-3 mb-4">
               <div className="tl-year-line" />
-              <span className="text-[#ffa042] text-sm tracking-[.3em] font-bold">
-                {activeYear}
-              </span>
+              <span className="text-[#ffa042] text-sm tracking-[.3em] font-bold">{activeYear}</span>
             </div>
 
             {/* Title */}
@@ -653,35 +598,24 @@ export default function Timeline() {
             </h2>
 
             {/* Description */}
-            <p className="text-base md:text-lg leading-[1.75] text-white/55 font-light max-w-[88%]">
-              {activeDesc}
-            </p>
+            <p className="text-base md:text-lg leading-[1.75] text-white/55 font-light max-w-[88%]">{activeDesc}</p>
 
             {/* Progress */}
             <div className="flex items-center gap-2 mt-6">
-              <span className="text-xs text-white/25 font-semibold tracking-widest">
-                {String(currentIndex + 1).padStart(2, "0")}
-              </span>
+              <span className="text-xs text-white/25 font-semibold tracking-widest">{String(currentIndex + 1).padStart(2, "0")}</span>
               <div className="flex-1 max-w-[120px] h-px bg-white/10 relative overflow-hidden">
                 <div
                   className="absolute inset-y-0 left-0 bg-gradient-to-r from-[#ffa042] to-[#ff6971] transition-all duration-300"
                   style={{ width: `${((currentIndex + 1) / TOTAL) * 100}%` }}
                 />
               </div>
-              <span className="text-xs text-white/25 font-semibold tracking-widest">
-                {String(TOTAL).padStart(2, "0")}
-              </span>
+              <span className="text-xs text-white/25 font-semibold tracking-widest">{String(TOTAL).padStart(2, "0")}</span>
             </div>
           </div>
 
           {/* Navigation */}
           <div className="flex items-center gap-3 mt-10 pointer-events-auto">
-            <button
-              onClick={() => go(-1)}
-              disabled={currentIndex === 0}
-              className="tl-clip-btn tl-nav-btn"
-              aria-label="Previous milestone"
-            >
+            <button onClick={() => go(-1)} disabled={currentIndex === 0} className="tl-clip-btn tl-nav-btn" aria-label="Previous milestone">
               <div className="tl-nav-btn-hover" aria-hidden />
               <ChevronLeft className="w-4 h-4 relative z-10" />
               <span className="relative z-10">PREV</span>
