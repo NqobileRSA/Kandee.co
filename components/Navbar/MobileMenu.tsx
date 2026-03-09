@@ -1,11 +1,5 @@
 "use client";
-import {
-  ArrowUpRight,
-  Phone,
-  Calendar,
-  ChevronDown,
-  Sparkles,
-} from "lucide-react";
+import { ArrowUpRight, Phone, Calendar, ChevronDown, Sparkles } from "lucide-react";
 import { glass, diamondClip, GRAD } from "./navStyles";
 import { NAV_LINKS } from "./navConstants";
 import "./MobileMenu.css";
@@ -164,12 +158,8 @@ export default function MobileMenu({
                         animationDelay: `${index * 0.07}s`,
                         background: isActive ? GRAD : "none",
                         WebkitBackgroundClip: isActive ? "text" : undefined,
-                        WebkitTextFillColor: isActive
-                          ? "transparent"
-                          : undefined,
-                        color: isActive
-                          ? "transparent"
-                          : "rgba(255,255,255,0.65)",
+                        WebkitTextFillColor: isActive ? "transparent" : undefined,
+                        color: isActive ? "transparent" : "rgba(255,255,255,0.65)",
                         transition: "all 0.25s",
                         display: "block",
                         paddingBottom: 4,
@@ -180,9 +170,7 @@ export default function MobileMenu({
                     {hasDropdown && (
                       <button
                         type="button"
-                        onClick={() =>
-                          setActiveDropdown(isDropOpen ? null : link.name)
-                        }
+                        onClick={() => setActiveDropdown(isDropOpen ? null : link.name)}
                         className="nav-clip-xs dropdown-toggle-btn"
                         title={`Toggle ${link.name} menu`}
                         aria-label={`Toggle ${link.name} submenu`}
@@ -190,9 +178,7 @@ export default function MobileMenu({
                         <ChevronDown
                           className="dropdown-chevron"
                           style={{
-                            transform: isDropOpen
-                              ? "rotate(180deg)"
-                              : "rotate(0deg)",
+                            transform: isDropOpen ? "rotate(180deg)" : "rotate(0deg)",
                           }}
                         />
                       </button>
@@ -236,12 +222,10 @@ export default function MobileMenu({
                               transition: "color 0.2s",
                             }}
                             onMouseEnter={(e) => {
-                              (e.currentTarget as HTMLElement).style.color =
-                                "#ffab42";
+                              (e.currentTarget as HTMLElement).style.color = "#ffab42";
                             }}
                             onMouseLeave={(e) => {
-                              (e.currentTarget as HTMLElement).style.color =
-                                "rgba(255,255,255,0.5)";
+                              (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.5)";
                             }}
                           >
                             <div
@@ -358,8 +342,7 @@ export default function MobileMenu({
                 (e.currentTarget as HTMLElement).style.color = "#ffab42";
               }}
               onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.color =
-                  "rgba(255,255,255,0.7)";
+                (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.7)";
               }}
             >
               hello@kandee.co
@@ -377,8 +360,7 @@ export default function MobileMenu({
                 (e.currentTarget as HTMLElement).style.color = "#ffab42";
               }}
               onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.color =
-                  "rgba(255,255,255,0.4)";
+                (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.4)";
               }}
             >
               +123 456 7890
