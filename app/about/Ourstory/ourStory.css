@@ -1,0 +1,133 @@
+/* ════════════════════════════════════════════
+   OurStory — os- prefix
+   No global html/body rules. No font imports.
+════════════════════════════════════════════ */
+
+/* ── Keyframes ───────────────────────────── */
+@keyframes os-pulse-glow {
+  0%, 100% { opacity: 0.5; }
+  50%       { opacity: 1; }
+}
+@keyframes os-float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-8px); }
+}
+@keyframes os-shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+@keyframes os-rise {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes os-play-pulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50%       { opacity: 1;   transform: scale(1.06); }
+}
+
+/* ── Animation helpers ───────────────────── */
+.os-pulse-glow  { animation: os-pulse-glow 2s ease-in-out infinite; }
+.os-float       { animation: os-float 5s ease-in-out infinite; }
+.os-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255,171,66,0.1), transparent);
+  background-size: 200% 100%;
+  animation: os-shimmer 3s linear infinite;
+}
+.os-play-pulse  { animation: os-play-pulse 2.4s ease-in-out infinite; }
+
+/* ── Glass surfaces ──────────────────────── */
+.os-glass {
+  background: rgba(255,255,255,0.03);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.37), inset 0 1px 0 rgba(255,255,255,0.05);
+}
+.os-glass-strong {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(30px) saturate(200%);
+  -webkit-backdrop-filter: blur(30px) saturate(200%);
+  border: 1px solid rgba(255,255,255,0.18);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+/* ── Clip-path helpers ───────────────────── */
+.os-clip-badge  { clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px); }
+.os-clip-card   { clip-path: polygon(24px 0, 100% 0, 100% calc(100% - 24px), calc(100% - 24px) 100%, 0 100%, 0 24px); }
+.os-clip-card-md{ clip-path: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px); }
+.os-clip-play   { clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px); }
+.os-clip-tag    { clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%); }
+
+/* ── Video block ─────────────────────────── */
+.os-video-wrap {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 16 / 7;
+  box-shadow: 0 60px 120px -20px rgba(0,0,0,0.9);
+}
+
+/* Image-based darkening (no filter transition on video) */
+.os-video-dark {
+  position: absolute; inset: 0; z-index: 2; pointer-events: none;
+  background: rgba(0,0,0,0);
+  transition: background .3s ease;
+}
+.os-video-wrap:hover .os-video-dark { background: rgba(0,0,0,0.08); }
+
+/* Controls fade in on playing */
+.os-controls {
+  position: absolute; top: 24px; right: 24px;
+  display: flex; gap: 8px; z-index: 20;
+}
+
+/* Hover ring */
+.os-video-ring {
+  position: absolute; inset: 0; z-index: 20; pointer-events: none;
+  clip-path: polygon(24px 0, 100% 0, 100% calc(100% - 24px), calc(100% - 24px) 100%, 0 100%, 0 24px);
+  border: 2px solid transparent;
+  transition: border-color .5s ease;
+}
+.os-video-wrap:hover .os-video-ring { border-color: rgba(255,171,66,0.3); }
+
+/* ── Philosophy block ────────────────────── */
+.os-philosophy {
+  position: relative;
+  overflow: hidden;
+}
+.os-philosophy-accent-top {
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(to right, transparent, rgba(255,171,66,0.6), transparent);
+}
+.os-philosophy-accent-bottom {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(to right, transparent, rgba(255,99,111,0.6), transparent);
+}
+
+/* ── Milestone card ──────────────────────── */
+.os-milestone-card {
+  transition: transform .5s cubic-bezier(.22,1,.36,1), box-shadow .5s ease;
+}
+.os-milestone-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 24px 60px -16px rgba(0,0,0,0.7);
+}
+
+/* Expanding accent bar */
+.os-accent-bar {
+  height: 2px; width: 32px;
+  transition: width .5s ease;
+  clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%);
+}
+.os-milestone-card:hover .os-accent-bar { width: 64px; }
+
+/* ── Section rise animation (JS-applied) ─── */
+.os-rise { animation: os-rise 0.8s cubic-bezier(0.22,1,0.36,1) both; }
+
+/* ── Reduced motion ──────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .os-pulse-glow, .os-float, .os-shimmer, .os-play-pulse, .os-rise {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

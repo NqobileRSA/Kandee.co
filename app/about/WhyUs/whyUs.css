@@ -1,0 +1,171 @@
+/* ════════════════════════════════════════════
+   WhyUs — wu- prefix
+   No global html/body rules.
+════════════════════════════════════════════ */
+
+/* ── Keyframes ───────────────────────────── */
+@keyframes wu-pulse-glow {
+  0%, 100% { opacity: 0.5; }
+  50%       { opacity: 1; }
+}
+@keyframes wu-float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
+}
+@keyframes wu-shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+@keyframes wu-rise {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Animation helpers ───────────────────── */
+.wu-pulse-glow { animation: wu-pulse-glow 2s ease-in-out infinite; }
+.wu-float      { animation: wu-float 5s ease-in-out infinite; }
+.wu-float-d    { animation: wu-float 5s ease-in-out 1.5s infinite; }
+.wu-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255,171,66,0.1), transparent);
+  background-size: 200% 100%;
+  animation: wu-shimmer 3s linear infinite;
+}
+
+/* ── Section-level reveal (JS-applied) ───── */
+.wu-rise-0 { animation: wu-rise 0.8s cubic-bezier(0.22,1,0.36,1) 0.00s both; }
+.wu-rise-1 { animation: wu-rise 0.8s cubic-bezier(0.22,1,0.36,1) 0.10s both; }
+.wu-rise-2 { animation: wu-rise 0.8s cubic-bezier(0.22,1,0.36,1) 0.20s both; }
+.wu-rise-3 { animation: wu-rise 0.8s cubic-bezier(0.22,1,0.36,1) 0.30s both; }
+.wu-rise-4 { animation: wu-rise 0.8s cubic-bezier(0.22,1,0.36,1) 0.40s both; }
+/* Hidden until IntersectionObserver fires */
+.wu-pre    { opacity: 0; }
+
+/* ── Glass surfaces ──────────────────────── */
+.wu-glass {
+  background: rgba(255,255,255,0.03);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.37), inset 0 1px 0 rgba(255,255,255,0.05);
+}
+.wu-glass-strong {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(30px) saturate(200%);
+  -webkit-backdrop-filter: blur(30px) saturate(200%);
+  border: 1px solid rgba(255,255,255,0.18);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+/* ── Clip helpers ────────────────────────── */
+.wu-clip-badge   { clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px); }
+.wu-clip-button  { clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px); }
+.wu-clip-card    { clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px); }
+.wu-clip-card-md { clip-path: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px); }
+.wu-clip-play    { clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px); }
+.wu-clip-tag     { clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%); }
+
+/* ── Reason card ─────────────────────────── */
+.wu-reason-card {
+  position: relative; overflow: hidden;
+  transition: transform 0.45s cubic-bezier(0.22,1,0.36,1), box-shadow 0.45s ease;
+}
+.wu-reason-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 30px 80px -20px rgba(0,0,0,0.8);
+}
+
+/* Top accent line (hidden → visible on hover) */
+.wu-reason-top-line {
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  opacity: 0; transition: opacity 0.45s ease;
+}
+.wu-reason-card:hover .wu-reason-top-line { opacity: 1; }
+
+/* Tint overlay */
+.wu-reason-tint {
+  position: absolute; inset: 0; pointer-events: none;
+  opacity: 0; transition: opacity 0.45s ease;
+}
+.wu-reason-card:hover .wu-reason-tint { opacity: 1; }
+
+/* Hover ring */
+.wu-reason-ring {
+  position: absolute; inset: 0; pointer-events: none;
+  clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px);
+  border: 2px solid transparent;
+  transition: border-color 0.45s ease;
+}
+.wu-reason-card:hover .wu-reason-ring { border-color: rgba(255,171,66,0.25); }
+
+/* Icon box */
+.wu-icon-box {
+  width: 48px; height: 48px;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+/* Progress fill bar */
+.wu-progress-fill {
+  height: 100%;
+  width: 0%;
+  transition: width 0.65s cubic-bezier(0.22,1,0.36,1);
+}
+.wu-reason-card:hover .wu-progress-fill { width: 100%; }
+
+/* Ghost index */
+.wu-ghost-idx {
+  position: absolute; bottom: 20px; right: 24px;
+  font-size: 5rem; font-weight: 700; line-height: 1;
+  color: rgba(255,255,255,0.025);
+  opacity: 1; transition: opacity 0.45s ease;
+  user-select: none; pointer-events: none;
+}
+.wu-reason-card:hover .wu-ghost-idx { opacity: 2; color: rgba(255,255,255,0.05); }
+
+/* ── Guarantee card ──────────────────────── */
+.wu-guarantee-card {
+  display: flex; align-items: center; gap: 16px;
+  position: relative; overflow: hidden;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+.wu-guarantee-card:hover { transform: translateY(-4px); }
+.wu-guarantee-ring {
+  position: absolute; inset: 0; pointer-events: none;
+  clip-path: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px);
+  border: 2px solid transparent;
+  transition: border-color 0.35s ease;
+}
+.wu-guarantee-card:hover .wu-guarantee-ring { border-color: rgba(255,171,66,0.2); }
+
+/* ── Video ───────────────────────────────── */
+.wu-video-ring {
+  position: absolute; inset: 0; pointer-events: none;
+  clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px);
+  border: 2px solid transparent;
+  transition: border-color 0.5s ease;
+}
+.wu-video-wrap:hover .wu-video-ring { border-color: rgba(255,171,66,0.3); }
+
+/* ── CTA panel ───────────────────────────── */
+.wu-cta-panel {
+  position: relative; overflow: hidden;
+}
+.wu-cta-accent-top {
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(to right, transparent, rgba(255,171,66,0.6), transparent);
+}
+.wu-cta-accent-bottom {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(to right, transparent, rgba(255,99,111,0.6), transparent);
+}
+
+/* ── Reduced motion ──────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .wu-pulse-glow, .wu-float, .wu-float-d, .wu-shimmer,
+  .wu-rise-0, .wu-rise-1, .wu-rise-2, .wu-rise-3, .wu-rise-4 {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .wu-reason-card, .wu-guarantee-card { transition: none !important; }
+}

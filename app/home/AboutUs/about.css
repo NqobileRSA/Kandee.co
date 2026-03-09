@@ -1,0 +1,118 @@
+/* ════════════════════════════════════════════
+   About section styles — all prefixed ab-
+   No global resets. Isolated keyframes.
+════════════════════════════════════════════ */
+
+/* ── Keyframes ───────────────────────────── */
+@keyframes ab-pulse-glow {
+  0%, 100% { opacity: 0.5; }
+  50%       { opacity: 1; }
+}
+@keyframes ab-float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-10px); }
+}
+@keyframes ab-float-delay {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-10px); }
+}
+@keyframes ab-shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+@keyframes ab-stat-rise {
+  from { opacity: 0; transform: translateY(32px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes ab-value-rise {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes ab-play-pulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50%       { opacity: 1;   transform: scale(1.06); }
+}
+
+/* ── Animation helpers ─────────────────── */
+.ab-float       { animation: ab-float 5s ease-in-out infinite; }
+.ab-float-delay { animation: ab-float-delay 5s ease-in-out 2s infinite; }
+.ab-pulse-glow  { animation: ab-pulse-glow 2s ease-in-out infinite; }
+.ab-play-pulse  { animation: ab-play-pulse 2.4s ease-in-out infinite; }
+.ab-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255,171,66,0.1), transparent);
+  background-size: 200% 100%;
+  animation: ab-shimmer 3s linear infinite;
+}
+
+/* ── Glass surfaces ────────────────────── */
+.ab-glass {
+  background: rgba(255,255,255,0.03);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.37), inset 0 1px 0 rgba(255,255,255,0.05);
+}
+.ab-glass-strong {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(30px) saturate(200%);
+  -webkit-backdrop-filter: blur(30px) saturate(200%);
+  border: 1px solid rgba(255,255,255,0.18);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+/* ── Clip-path helpers ─────────────────── */
+.ab-clip-xs   { clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%); }
+.ab-clip-sm   { clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px); }
+.ab-clip-md   { clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px); }
+.ab-clip-card { clip-path: polygon(24px 0, 100% 0, 100% calc(100% - 24px), calc(100% - 24px) 100%, 0 100%, 0 24px); }
+.ab-clip-card-md { clip-path: polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px); }
+
+/* ── Stat card ─────────────────────────── */
+.ab-stat-card {
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+.ab-stat-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 24px 60px -16px rgba(0,0,0,0.7);
+}
+
+/* ── Value card image scale ────────────── */
+.ab-val-img {
+  transition: transform 2s ease, filter 0.7s ease;
+  filter: grayscale(30%) contrast(1.12) brightness(0.55);
+}
+.ab-val-card:hover .ab-val-img {
+  transform: scale(1.07);
+  filter: grayscale(10%) contrast(1.08) brightness(0.48);
+}
+
+/* ── Expanding accent bar on hover ──────── */
+.ab-accent-bar {
+  transition: width 0.5s ease;
+  width: 40px;
+}
+.ab-stat-card:hover  .ab-accent-bar { width: 80px; }
+.ab-val-card:hover   .ab-accent-bar { width: 80px; }
+
+/* ── Value card title colour transition ── */
+/* Can't transition CSS gradients — use color + opacity instead */
+.ab-val-title {
+  color: rgba(255,255,255,0.97);
+  transition: color 0.5s ease;
+}
+.ab-val-card:hover .ab-val-title { color: #ffab42; }
+
+/* ── Video card hover ring ───────────────── */
+.ab-video-ring {
+  position: absolute; inset: 0; pointer-events: none; z-index: 20;
+  clip-path: polygon(24px 0, 100% 0, 100% calc(100% - 24px), calc(100% - 24px) 100%, 0 100%, 0 24px);
+  border: 2px solid transparent;
+  transition: border-color 0.5s ease;
+}
+.group:hover .ab-video-ring { border-color: rgba(255,171,66,0.3); }
+
+/* ── Responsive ────────────────────────── */
+@media (max-width: 768px) {
+  .ab-hero-grid { grid-template-columns: 1fr !important; }
+  .ab-values-grid { grid-template-columns: 1fr !important; }
+}

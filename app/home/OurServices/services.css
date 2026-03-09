@@ -1,0 +1,132 @@
+/* ════════════════════════════════════════════
+   Services section styles — all prefixed sv-
+   No global resets. Isolated keyframes.
+════════════════════════════════════════════ */
+
+/* ── Keyframes ───────────────────────────── */
+@keyframes sv-pulse-glow {
+  0%, 100% { opacity: 0.5; }
+  50%       { opacity: 1; }
+}
+@keyframes sv-float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-8px); }
+}
+@keyframes sv-float-delay {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-8px); }
+}
+@keyframes sv-shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+@keyframes sv-rise {
+  from { opacity: 0; transform: translateX(-20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes sv-panel-fade {
+  from { opacity: 0; transform: scale(0.98); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* ── Animation helpers ─────────────────── */
+.sv-pulse-glow  { animation: sv-pulse-glow 2s ease-in-out infinite; }
+.sv-float       { animation: sv-float 4s ease-in-out infinite; }
+.sv-float-delay { animation: sv-float-delay 4s ease-in-out 1.5s infinite; }
+.sv-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255,171,66,0.1), transparent);
+  background-size: 200% 100%;
+  animation: sv-shimmer 3s linear infinite;
+}
+.sv-panel-fade { animation: sv-panel-fade 0.45s cubic-bezier(0.22,1,0.36,1) both; }
+
+/* ── Glass surfaces ─────────────────────── */
+.sv-glass {
+  background: rgba(255,255,255,0.03);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.37), inset 0 1px 0 rgba(255,255,255,0.05);
+}
+.sv-glass-strong {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(30px) saturate(200%);
+  -webkit-backdrop-filter: blur(30px) saturate(200%);
+  border: 1px solid rgba(255,255,255,0.18);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+/* ── Clip-path helpers ──────────────────── */
+.sv-clip-xs   { clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%); }
+.sv-clip-sm   { clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px); }
+.sv-clip-md   { clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px); }
+.sv-clip-card { clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px); }
+.sv-clip-icon { clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px); }
+
+/* ── Service row ─────────────────────────── */
+.sv-row {
+  position: relative;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  cursor: pointer;
+  transition: background 0.4s ease;
+}
+.sv-row:last-child { border-bottom: 1px solid rgba(255,255,255,0.08); }
+.sv-row.sv-active,
+.sv-row:hover      { background: rgba(255,255,255,0.02); }
+
+/* Left accent bar */
+.sv-row-bar {
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, #ffab42, #ff636f);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  box-shadow: 0 0 16px rgba(255,171,66,0.5);
+}
+.sv-row.sv-active .sv-row-bar,
+.sv-row:hover     .sv-row-bar { opacity: 1; }
+
+/* Tags height reveal */
+.sv-tags-wrap {
+  overflow: hidden;
+  transition: max-height 0.4s ease, opacity 0.4s ease;
+  max-height: 0;
+  opacity: 0;
+}
+.sv-active .sv-tags-wrap {
+  max-height: 40px;
+  opacity: 1;
+}
+
+/* Subtitle + accent bar reveal */
+.sv-subtitle {
+  transition: opacity 0.4s ease, transform 0.4s ease, color 0.4s ease;
+  opacity: 0;
+  transform: translateY(-4px);
+}
+.sv-active .sv-subtitle {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Expanding accent bar */
+.sv-accent-bar {
+  height: 2px;
+  transition: width 0.5s ease;
+  width: 0;
+}
+.sv-active .sv-accent-bar { width: 5rem; }
+
+/* Video panel crossfade */
+.sv-panel-video {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%; object-fit: cover;
+  filter: grayscale(10%) contrast(1.12) brightness(0.58);
+  transition: opacity 0.6s ease;
+  will-change: opacity;
+}
+
+/* ── Responsive ──────────────────────────── */
+@media (max-width: 1024px) {
+  .sv-panel-sticky { position: static !important; }
+}

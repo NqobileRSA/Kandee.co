@@ -1,0 +1,183 @@
+/* ── Accordion card flex transitions ───────────────────────── */
+.fw-card {
+  transition: flex 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  flex-shrink: 0;
+  overflow: hidden;
+  position: relative;
+  border-radius: 0;
+}
+
+.fw-card.active {
+  flex: 5;
+  cursor: default;
+}
+
+.fw-card.inactive {
+  flex: 1;
+  min-width: 0;
+  cursor: pointer;
+}
+
+.fw-card.inactive:hover {
+  flex: 1.4;
+}
+
+/* ── Card content show/hide ─────────────────────────────────── */
+.fw-content-show {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 0.35s ease 0.25s,
+    transform 0.35s ease 0.25s;
+  pointer-events: auto;
+}
+
+.fw-content-hide {
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+  transition:
+    opacity 0.35s ease 0s,
+    transform 0.35s ease 0s;
+}
+
+/* ── Glass surfaces ────────────────────────────────────────── */
+.fw-glass {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 8px 32px 0 rgba(0, 0, 0, 0.37),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+}
+
+.fw-glass-strong {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(30px) saturate(200%);
+  -webkit-backdrop-filter: blur(30px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow:
+    0 8px 32px 0 rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+}
+
+/* ── Keyframes ──────────────────────────────────────────────── */
+@keyframes fw-pulse-glow {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes fw-shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+.fw-pulse-glow {
+  animation: fw-pulse-glow 2s ease-in-out infinite;
+}
+
+.fw-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255, 171, 66, 0.1), transparent);
+  background-size: 200% 100%;
+  animation: fw-shimmer 3s linear infinite;
+}
+
+/* ── Responsive heights ────────────────────────────────────── */
+@media (max-width: 640px) {
+  .fw-accordion {
+    flex-direction: column;
+    height: auto;
+    gap: 0.5rem;
+  }
+
+  .fw-card.active {
+    flex: none;
+    height: 380px;
+    min-height: 380px;
+  }
+
+  .fw-card.inactive {
+    flex: none;
+    height: 72px;
+    min-height: 72px;
+  }
+
+  .fw-card.inactive:hover {
+    flex: none;
+    height: 88px;
+    min-height: 88px;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 768px) {
+  .fw-accordion {
+    gap: 0.75rem;
+    height: 480px;
+  }
+
+  .fw-card.active {
+    flex: 5;
+  }
+
+  .fw-card.inactive {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .fw-card.inactive:hover {
+    flex: 1.4;
+  }
+}
+
+@media (min-width: 769px) {
+  .fw-accordion {
+    gap: 0.75rem;
+    height: 520px;
+  }
+
+  .fw-card.active {
+    flex: 5;
+  }
+
+  .fw-card.inactive {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .fw-card.inactive:hover {
+    flex: 1.4;
+  }
+}
+
+/* ── Accessibility: Prefers Reduced Motion ─────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .fw-card {
+    transition: none;
+  }
+
+  .fw-content-show,
+  .fw-content-hide {
+    transition: none;
+  }
+
+  .fw-card.inactive:hover {
+    flex: 1;
+  }
+}
+
+/* ── Loading state ─────────────────────────────────────────── */
+.fw-card-loading {
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.1));
+  background-size: 200% 100%;
+  animation: fw-shimmer 2s infinite;
+}

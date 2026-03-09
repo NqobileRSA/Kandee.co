@@ -1,0 +1,108 @@
+/* ════════════════════════════════════════════
+   PageHero — ph- prefix
+   Reusable full-viewport hero with bg video.
+   No global html/body rules.
+════════════════════════════════════════════ */
+
+/* ── Keyframes ───────────────────────────── */
+@keyframes ph-float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-8px); }
+}
+@keyframes ph-pulse-glow {
+  0%, 100% { opacity: 0.5; }
+  50%       { opacity: 1; }
+}
+@keyframes ph-shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+@keyframes ph-rise {
+  from { opacity: 0; transform: translateY(32px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes ph-line-grow {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+/* ── Animation helpers ───────────────────── */
+.ph-float       { animation: ph-float 5s ease-in-out infinite; }
+.ph-float-delay { animation: ph-float 5s ease-in-out 2s infinite; }
+.ph-pulse-glow  { animation: ph-pulse-glow 2s ease-in-out infinite; }
+.ph-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255,171,66,0.12), transparent);
+  background-size: 200% 100%;
+  animation: ph-shimmer 3s linear infinite;
+}
+
+/* ── Staggered entry ─────────────────────── */
+.ph-r0 { animation: ph-rise 0.85s cubic-bezier(0.22,1,0.36,1) 0.05s both; }
+.ph-r1 { animation: ph-rise 0.85s cubic-bezier(0.22,1,0.36,1) 0.15s both; }
+.ph-r2 { animation: ph-rise 0.85s cubic-bezier(0.22,1,0.36,1) 0.25s both; }
+.ph-r3 { animation: ph-rise 0.85s cubic-bezier(0.22,1,0.36,1) 0.38s both; }
+.ph-r4 { animation: ph-rise 0.85s cubic-bezier(0.22,1,0.36,1) 0.48s both; }
+
+/* ── Glass surfaces ──────────────────────── */
+.ph-glass {
+  background: rgba(255,255,255,0.03);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.37), inset 0 1px 0 rgba(255,255,255,0.05);
+}
+.ph-glass-strong {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(30px) saturate(200%);
+  -webkit-backdrop-filter: blur(30px) saturate(200%);
+  border: 1px solid rgba(255,255,255,0.18);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+/* ── Clip-path helpers ───────────────────── */
+.ph-clip-badge  { clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px); }
+.ph-clip-button { clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px); }
+.ph-clip-tag    { clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%); }
+
+/* ── Background video ────────────────────── */
+.ph-bg-video {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center;
+  /* Static colour grade — no transition needed */
+  filter: brightness(0.42) contrast(1.18) saturate(1.05);
+  will-change: transform;         /* GPU layer shared with parallax */
+}
+
+/* ── Vertical scroll label ───────────────── */
+.ph-text-vertical {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+}
+
+/* ── Accent rule ─────────────────────────── */
+.ph-accent-rule {
+  height: 3px; width: 64px;
+  background: linear-gradient(to right, #ffab42, #ff636f, transparent);
+  clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%);
+  transform-origin: left;
+  animation: ph-line-grow 0.9s cubic-bezier(0.22,1,0.36,1) 0.5s both;
+}
+
+/* ── Bottom page fade ────────────────────── */
+.ph-bottom-fade {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 140px;
+  background: linear-gradient(to top, rgb(13,13,13), transparent);
+  pointer-events: none; z-index: 10;
+}
+
+/* ── Reduced motion ──────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .ph-float, .ph-float-delay, .ph-pulse-glow, .ph-shimmer,
+  .ph-r0, .ph-r1, .ph-r2, .ph-r3, .ph-r4 {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

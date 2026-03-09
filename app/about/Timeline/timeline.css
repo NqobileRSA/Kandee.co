@@ -1,0 +1,184 @@
+/* ════════════════════════════════════════════
+   Timeline — tl- prefix
+   No global html/body rules. Isolated keyframes.
+════════════════════════════════════════════ */
+
+/* ── Keyframes ───────────────────────────── */
+@keyframes tl-pulse-glow {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+@keyframes tl-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+@keyframes tl-float-delay {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+@keyframes tl-txt-fade {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Animation helpers ───────────────────── */
+.tl-pulse-glow {
+  animation: tl-pulse-glow 2s ease-in-out infinite;
+}
+.tl-float {
+  animation: tl-float 5s ease-in-out infinite;
+}
+.tl-float-delay {
+  animation: tl-float-delay 5s ease-in-out 1.5s infinite;
+}
+
+/* ── Glass surfaces ──────────────────────── */
+.tl-glass {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.37),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* ── Clip-path helpers ───────────────────── */
+.tl-clip-badge {
+  clip-path: polygon(
+    6px 0,
+    100% 0,
+    100% calc(100% - 6px),
+    calc(100% - 6px) 100%,
+    0 100%,
+    0 6px
+  );
+}
+.tl-clip-btn {
+  clip-path: polygon(
+    8px 0,
+    100% 0,
+    100% calc(100% - 8px),
+    calc(100% - 8px) 100%,
+    0 100%,
+    0 8px
+  );
+}
+
+/* ── Sidebar text fade ───────────────────── */
+.tl-text-in {
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s ease;
+  opacity: 1;
+  transform: translateY(0);
+}
+.tl-text-out {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+/* ── Nav button ──────────────────────────── */
+.tl-nav-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.7);
+  transition:
+    color 0.25s ease,
+    border-color 0.25s ease;
+  overflow: hidden;
+}
+.tl-nav-btn:disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
+}
+.tl-nav-btn:not(:disabled):hover {
+  color: #fff;
+  border-color: rgba(255, 160, 66, 0.4);
+}
+.tl-nav-btn-hover {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to right,
+    rgba(255, 160, 66, 0.12),
+    rgba(255, 105, 113, 0.12)
+  );
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+.tl-nav-btn:not(:disabled):hover .tl-nav-btn-hover {
+  opacity: 1;
+}
+
+/* ── Dot nav ─────────────────────────────── */
+.tl-dot {
+  height: 4px;
+  border-radius: 9999px;
+  transition:
+    width 0.3s ease,
+    background 0.3s ease;
+  cursor: pointer;
+}
+.tl-dot-active {
+  width: 2rem;
+  background: linear-gradient(to right, #ffa042, #ff6971);
+}
+.tl-dot-inactive {
+  width: 6px;
+  background: rgba(255, 255, 255, 0.18);
+}
+.tl-dot-inactive:hover {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+/* ── Year accent line ────────────────────── */
+.tl-year-line {
+  height: 1px;
+  width: 40px;
+  flex-shrink: 0;
+  background: linear-gradient(to right, #ffa042, #ff6971);
+}
+
+/* ── Reduced motion ──────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .tl-float,
+  .tl-float-delay,
+  .tl-pulse-glow {
+    animation: none !important;
+  }
+  .tl-text-in,
+  .tl-text-out {
+    transition: none !important;
+  }
+}

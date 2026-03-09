@@ -1,0 +1,302 @@
+@import url("https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Playfair+Display:ital,wght@1,400&display=swap");
+
+/* Prevent horizontal scroll from 100vw breakout + ticker animations */
+html,
+body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+/* ── Keyframes ─────────────────────────────────────────────── */
+@keyframes hero-ticker {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes hero-ticker-reverse {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes hero-pulse-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+@keyframes hero-float-y {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+}
+
+@keyframes hero-shimmer {
+  from {
+    transform: translateX(-200%) skewX(-20deg);
+  }
+  to {
+    transform: translateX(350%) skewX(-20deg);
+  }
+}
+
+@keyframes hero-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes hero-rise-fade {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hero-unclip-up {
+  from {
+    clip-path: inset(100% 0 0 0);
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    clip-path: inset(0% 0 0 0);
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hero-unclip-right {
+  from {
+    clip-path: inset(0 100% 0 0);
+    opacity: 0;
+  }
+  to {
+    clip-path: inset(0 0% 0 0);
+    opacity: 1;
+  }
+}
+
+/* ── Entry animation classes ────────────────────────────────── */
+.hero-e0 {
+  animation: hero-unclip-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.05s both;
+}
+
+.hero-e1 {
+  animation: hero-unclip-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+}
+
+.hero-e2 {
+  animation: hero-rise-fade 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both;
+}
+
+.hero-e3 {
+  animation: hero-rise-fade 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.37s both;
+}
+
+.hero-e4 {
+  animation: hero-rise-fade 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
+}
+
+.hero-e5 {
+  animation: hero-fade-in 0.7s ease 0.6s both;
+}
+
+.hero-e6 {
+  animation: hero-unclip-right 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+}
+
+.hero-pre {
+  opacity: 0;
+}
+
+/* ── CTA hover ──────────────────────────────────────────────── */
+.hero-cta-primary,
+.hero-cta-secondary {
+  transition: transform 0.2s ease;
+}
+
+.hero-cta-primary:hover,
+.hero-cta-secondary:hover {
+  transform: translateY(-2px);
+}
+
+/* ── Lightbox ───────────────────────────────────────────────── */
+.hero-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: rgba(0, 0, 0, 0.96);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: hero-fade-in 0.2s ease both;
+}
+
+/* ── Ticker ─────────────────────────────────────────────────── */
+.hero-ticker-track {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  width: max-content;
+  align-items: center;
+  animation: hero-ticker 50s linear infinite;
+}
+
+.hero-ticker-outer {
+  overflow: hidden;
+  position: relative;
+}
+
+.hero-ticker-outer:hover .hero-ticker-track {
+  animation-play-state: paused;
+}
+
+/* ── Responsive bento grid ─────────────────────────────────── */
+
+/* Base: mobile-first single column */
+.hero-bento {
+  grid-template-columns: 1fr !important;
+  grid-template-rows: 72vw auto auto 44px !important;
+  grid-template-areas:
+    "hero"
+    "stats"
+    "reel"
+    "trust" !important;
+  height: auto !important;
+  min-height: unset !important;
+}
+
+/* Tablet: two columns with narrower sidebar */
+@media (min-width: 640px) {
+  .hero-bento {
+    grid-template-columns: 1fr 280px !important;
+    grid-template-rows: 1fr 1fr 48px !important;
+    grid-template-areas:
+      "hero stats"
+      "hero reel"
+      "trust trust" !important;
+    height: 100vh !important;
+    min-height: 580px !important;
+  }
+}
+
+/* Desktop: full layout */
+@media (min-width: 1024px) {
+  .hero-bento {
+    grid-template-columns: 1fr 360px !important;
+    grid-template-rows: 1fr 1fr 48px !important;
+    grid-template-areas:
+      "hero stats"
+      "hero reel"
+      "trust trust" !important;
+    height: 100vh !important;
+    min-height: 620px !important;
+  }
+}
+
+/* Mobile: hero cell fixed aspect ratio */
+@media (max-width: 639px) {
+  .hero-video-cell {
+    min-height: 72vw;
+  }
+
+  /* Recent work cell: shorter on mobile */
+  .hero-reel-cell {
+    min-height: 260px;
+  }
+
+  /* Trust strip taller on mobile for readability */
+  .hero-bento {
+    grid-template-rows: 72vw auto auto 52px !important;
+  }
+}
+
+/* Tablet: reduce gap slightly */
+@media (min-width: 640px) and (max-width: 1023px) {
+  .hero-bento {
+    gap: 8px !important;
+  }
+}
+
+/* ── Mobile touch / tap states ─────────────────────────────── */
+@media (hover: none) {
+  .hero-cta-primary:hover,
+  .hero-cta-secondary:hover {
+    transform: none;
+  }
+}
+
+/* ── Mobile meta bar ────────────────────────────────────────── */
+@media (max-width: 639px) {
+  .hero-meta-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .hero-meta-bar .hero-scroll-hint {
+    display: none;
+  }
+
+  /* Services: tighter rows */
+  .hero-services-row {
+    padding-top: 9px !important;
+    padding-bottom: 9px !important;
+  }
+}
+
+/* ── Noise texture ──────────────────────────────────────────── */
+.hero-noise {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.3;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+}
+
+/* ── Accessibility: Respect motion preferences ────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .hero-ticker-track {
+    animation: none !important;
+  }
+
+  .hero-ticker-outer:hover .hero-ticker-track {
+    animation-play-state: running !important;
+  }
+}

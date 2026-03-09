@@ -1,0 +1,639 @@
+/* ═══════════════════════════════════════════════
+   GALLERY TEASER — gt- prefix
+   PERFORMANCE OPTIMIZED:
+   - GPU layers with will-change
+   - Container queries for layout containment
+   - Lazy transform-only animations (no filters)
+   - Opacity-only overlays (compositor-friendly)
+═══════════════════════════════════════════════ */
+
+/* ── Keyframes ─────────────────────────────── */
+@keyframes gt-rise {
+  from {
+    opacity: 0;
+    transform: translateY(48px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes gt-unclip {
+  from {
+    clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%);
+    opacity: 0;
+  }
+  to {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    opacity: 1;
+  }
+}
+
+@keyframes gt-pulse {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes gt-shimmer {
+  from {
+    transform: translateX(-180%) skewX(-18deg);
+  }
+  to {
+    transform: translateX(360%) skewX(-18deg);
+  }
+}
+
+@keyframes gt-cursor-pop {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.3);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes gt-scroll-drip {
+  0%,
+  100% {
+    transform: translateY(-100%);
+  }
+  50% {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes gt-count-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Cursor ──────────────────────────────────── */
+.gt-cursor {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  width: 90px;
+  height: 90px;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.14s ease;
+  will-change: transform;
+}
+
+.gt-cursor.gt-cur-vis {
+  animation: gt-cursor-pop 0.18s ease both;
+}
+
+.gt-cursor-face {
+  position: absolute;
+  inset: 0;
+  border: 1.5px solid rgba(255, 171, 66, 0.85);
+  clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
+  background: rgba(13, 13, 13, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.gt-cur-label {
+  font-family: "Syne", sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: #ffab42;
+  text-transform: uppercase;
+}
+
+/* ── Shared utilities ─────────────────────────── */
+.gt-hud-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: 20;
+  background: linear-gradient(90deg, transparent, #ffab42 38%, #ff636f 62%, transparent);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  box-shadow: 0 0 22px rgba(255, 171, 66, 0.65);
+  will-change: opacity;
+}
+
+.gt-corner {
+  position: absolute;
+  z-index: 20;
+  pointer-events: none;
+  width: 20px;
+  height: 20px;
+  border-color: rgba(255, 171, 66, 0.55);
+  border-style: solid;
+  opacity: 0.35;
+  transition:
+    opacity 0.2s ease,
+    border-color 0.2s ease;
+  will-change: opacity;
+}
+
+.gt-corner-tl {
+  top: 14px;
+  left: 14px;
+  border-width: 1.5px 0 0 1.5px;
+}
+
+.gt-corner-br {
+  bottom: 14px;
+  right: 14px;
+  border-width: 0 1.5px 1.5px 0;
+}
+
+.gt-hov .gt-hud-line {
+  opacity: 1;
+}
+
+.gt-hov .gt-corner {
+  opacity: 1;
+  border-color: rgba(255, 171, 66, 1);
+}
+
+/* ── Tag pill ─────────────────────────────────── */
+.gt-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 14px;
+  font-family: "Syne", sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: #ffab42;
+  background: rgba(255, 171, 66, 0.14);
+  border: 1px solid rgba(255, 171, 66, 0.4);
+  clip-path: polygon(5px 0, 100% 0, calc(100% - 5px) 100%, 0 100%);
+  opacity: 0.85;
+  transition: opacity 0.2s ease;
+  will-change: opacity;
+}
+
+.gt-hov .gt-tag {
+  opacity: 1;
+}
+
+/* ── CTA link ─────────────────────────────────── */
+.gt-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 24px;
+  font-family: "Syne", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #fff;
+  text-decoration: none;
+  background: linear-gradient(135deg, #ffab42, #ff636f);
+  clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+  box-shadow: 0 8px 28px rgba(255, 107, 0, 0.44);
+  transition:
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+  pointer-events: auto;
+  will-change: transform;
+}
+
+.gt-cta:hover {
+  box-shadow: 0 14px 40px rgba(255, 107, 0, 0.62);
+  transform: translateY(-1px);
+}
+
+/* ── Scroll cue ───────────────────────────────── */
+.gt-scroll-cue {
+  position: absolute;
+  bottom: 30px;
+  right: 34px;
+  z-index: 10;
+  width: 1px;
+  height: 54px;
+  overflow: hidden;
+  opacity: 0.45;
+  transition: opacity 0.3s ease;
+  will-change: opacity;
+}
+
+.gt-hov .gt-scroll-cue {
+  opacity: 0.1;
+}
+
+.gt-scroll-line {
+  width: 100%;
+  height: 200%;
+  background: linear-gradient(to bottom, transparent, #ffab42 45%, transparent);
+  animation: gt-scroll-drip 2.2s ease-in-out infinite;
+}
+
+/* ══════════════════════════════════════════════
+   HERO CARD — 100vh fullscreen hero
+══════════════════════════════════════════════ */
+.gt-hero-wrap {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  position: relative;
+  overflow: hidden;
+  contain: layout;
+}
+
+.gt-hero-pre {
+  opacity: 0;
+}
+
+.gt-hero-in {
+  animation: gt-rise 1.1s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.gt-hero-card {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 640px;
+  max-height: 1080px;
+  overflow: hidden;
+  cursor: none;
+  contain: layout style paint;
+}
+
+/* Image: GPU-accelerated transform only */
+.gt-hero-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: contrast(1.06) saturate(1.18);
+  transform: scale(1.04) translate3d(0, 0, 0);
+  transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* Permanent vignette */
+.gt-hero-vig {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    linear-gradient(to right, rgba(0, 0, 0, 0.25) 0%, transparent 16%, transparent 84%, rgba(0, 0, 0, 0.25) 100%),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 0%, transparent 12%, transparent 70%, rgba(0, 0, 0, 0.38) 100%);
+}
+
+/* Dark overlay — opacity transition (compositor-friendly) */
+.gt-hero-dark {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: rgba(0, 0, 0, 0.52);
+  opacity: 0;
+  transition: opacity 0.28s ease;
+  will-change: opacity;
+}
+
+.gt-hov .gt-hero-dark {
+  opacity: 1;
+}
+
+/* Gradient for text readability */
+.gt-hero-grad {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 75%;
+  z-index: 4;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.7) 25%, rgba(0, 0, 0, 0.18) 58%, transparent 100%);
+  opacity: 0;
+  transition: opacity 0.28s ease;
+  pointer-events: none;
+  will-change: opacity;
+}
+
+.gt-hov .gt-hero-grad {
+  opacity: 1;
+}
+
+/* Hero watermark */
+.gt-hero-idx {
+  position: absolute;
+  bottom: -0.04em;
+  right: 0.04em;
+  z-index: 1;
+  font-family: "Syne", sans-serif;
+  font-size: clamp(8rem, 20vw, 24rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.06em;
+  color: rgba(255, 255, 255, 0.04);
+  pointer-events: none;
+  user-select: none;
+  mix-blend-mode: overlay;
+  transition: color 0.3s ease;
+  will-change: color;
+}
+
+.gt-hov .gt-hero-idx {
+  color: rgba(255, 255, 255, 0.08);
+}
+
+/* Content — tag + title always visible, body + cta on hover */
+.gt-hero-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  padding: clamp(28px, 4.5vw, 72px) clamp(28px, 4.5vw, 72px) clamp(36px, 5vw, 80px);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  pointer-events: none;
+}
+
+.gt-hero-title {
+  font-family: "Syne", sans-serif;
+  font-size: clamp(2.6rem, 6.5vw, 8rem);
+  font-weight: 800;
+  line-height: 0.98;
+  letter-spacing: -0.038em;
+  color: rgba(255, 255, 255, 0.97);
+  margin: 0;
+  text-shadow: 0 2px 48px rgba(0, 0, 0, 0.55);
+}
+
+.gt-hero-reveal {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 0.28s ease 0.05s,
+    transform 0.28s ease 0.05s;
+  pointer-events: none;
+  will-change: opacity, transform;
+}
+
+.gt-hov .gt-hero-reveal {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.gt-hero-body {
+  font-family: "Syne", sans-serif;
+  font-size: clamp(0.82rem, 1.1vw, 0.98rem);
+  color: rgba(255, 255, 255, 0.65);
+  font-weight: 300;
+  line-height: 1.68;
+  max-width: 44ch;
+  margin: 0;
+}
+
+/* ══════════════════════════════════════════════
+   SPLIT ROW — two panels edge-to-edge
+══════════════════════════════════════════════ */
+.gt-split-wrap {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  overflow: hidden;
+  contain: layout;
+}
+
+.gt-split-pre {
+  opacity: 0;
+}
+
+.gt-split-in {
+  animation: gt-rise 1.1s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.gt-split-row {
+  display: flex;
+  height: clamp(480px, 62vh, 820px);
+  position: relative;
+}
+
+.gt-split-panel {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  cursor: none;
+  contain: layout style paint;
+}
+
+.gt-split-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: contrast(1.06) saturate(1.16);
+  transform: scale(1.04) translate3d(0, 0, 0);
+  transition: transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.gt-hov .gt-split-img {
+  transform: scale(1.09) translate3d(0, 0, 0);
+}
+
+/* Dark overlay */
+.gt-split-dark {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  will-change: opacity;
+}
+
+.gt-hov .gt-split-dark {
+  opacity: 1;
+}
+
+/* Gradient for text */
+.gt-split-grad {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.06) 52%, transparent 100%);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+  will-change: opacity;
+}
+
+.gt-hov .gt-split-grad {
+  opacity: 1;
+}
+
+.gt-split-content {
+  position: absolute;
+  z-index: 10;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: clamp(20px, 3.5vw, 52px);
+  pointer-events: none;
+}
+
+.gt-split-content-r {
+  right: 0;
+  align-items: flex-end;
+  text-align: right;
+}
+
+.gt-split-title {
+  font-family: "Syne", sans-serif;
+  font-size: clamp(1.8rem, 3.8vw, 5rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.035em;
+  color: rgba(255, 255, 255, 0.97);
+  text-shadow: 0 2px 32px rgba(0, 0, 0, 0.5);
+  margin: 0;
+}
+
+.gt-split-reveal {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 0.25s ease 0.05s,
+    transform 0.25s ease 0.05s;
+  pointer-events: none;
+  will-change: opacity, transform;
+}
+
+.gt-hov .gt-split-reveal {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.gt-split-body {
+  font-family: "Syne", sans-serif;
+  font-size: clamp(0.78rem, 1vw, 0.92rem);
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 300;
+  line-height: 1.65;
+  max-width: 28ch;
+  margin: 0;
+}
+
+.gt-split-divider {
+  width: 2px;
+  flex-shrink: 0;
+  background: linear-gradient(to bottom, transparent, #ffab42 40%, #ff636f 60%, transparent);
+  z-index: 20;
+  position: relative;
+}
+
+.gt-split-panel .gt-scroll-cue {
+  bottom: 20px;
+  right: 20px;
+}
+
+/* ══════════════════════════════════════════════
+   STATS STRIP
+══════════════════════════════════════════════ */
+.gt-count-strip {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: clamp(20px, 3vw, 40px) clamp(12px, 2vw, 36px);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.gt-count-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  opacity: 0;
+  animation: gt-count-up 0.6s ease both;
+  will-change: opacity, transform;
+}
+
+.gt-count-num {
+  font-family: "Syne", sans-serif;
+  font-size: clamp(1.4rem, 2.5vw, 2.2rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  background: linear-gradient(135deg, #ffab42, #ff636f);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gt-count-label {
+  font-family: "Syne", sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.gt-count-divider {
+  width: 1px;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+}
+
+/* ══════════════════════════════════════════════
+   ACCESSIBILITY: Prefers Reduced Motion
+══════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .gt-hero-img,
+  .gt-split-img {
+    transition: none !important;
+  }
+
+  .gt-hero-reveal,
+  .gt-split-reveal {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
+}

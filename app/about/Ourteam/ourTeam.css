@@ -1,0 +1,194 @@
+/* ════════════════════════════════════════════
+   OurTeam — ot- prefix
+   No global html/body rules. No font imports.
+════════════════════════════════════════════ */
+
+/* ── Keyframes ───────────────────────────── */
+@keyframes ot-pulse-glow {
+  0%, 100% { opacity: 0.5; }
+  50%       { opacity: 1; }
+}
+@keyframes ot-float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
+}
+@keyframes ot-float-delay {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
+}
+@keyframes ot-shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+@keyframes ot-rise {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Animation helpers ───────────────────── */
+.ot-pulse-glow  { animation: ot-pulse-glow 2s ease-in-out infinite; }
+.ot-float       { animation: ot-float 5s ease-in-out infinite; }
+.ot-float-delay { animation: ot-float-delay 5s ease-in-out 1.5s infinite; }
+.ot-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255,171,66,0.1), transparent);
+  background-size: 200% 100%;
+  animation: ot-shimmer 3s linear infinite;
+}
+
+/* ── Glass surfaces ──────────────────────── */
+.ot-glass {
+  background: rgba(255,255,255,0.03);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.37), inset 0 1px 0 rgba(255,255,255,0.05);
+}
+.ot-glass-strong {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(30px) saturate(200%);
+  -webkit-backdrop-filter: blur(30px) saturate(200%);
+  border: 1px solid rgba(255,255,255,0.18);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+/* ── Clip-path helpers ───────────────────── */
+.ot-clip-badge  { clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px); }
+.ot-clip-button { clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px); }
+.ot-clip-card   { clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px); }
+.ot-clip-tag    { clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%); }
+.ot-clip-icon   { clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px); }
+
+/* ── Member card ─────────────────────────── */
+.ot-card {
+  position: relative;
+  height: 520px;
+  overflow: hidden;
+  transition: transform .5s cubic-bezier(.22,1,.36,1), box-shadow .5s ease;
+}
+.ot-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 40px 100px -20px rgba(0,0,0,0.85);
+}
+
+/* Image — transform only, no filter transition (GPU) */
+.ot-card-img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%; object-fit: cover;
+  filter: grayscale(25%) contrast(1.12) brightness(0.7);  /* static grade */
+  transform: scale(1) translate3d(0,0,0);
+  transition: transform 2s ease;
+  will-change: transform;
+}
+.ot-member:hover .ot-card-img { transform: scale(1.08) translate3d(0,0,0); }
+
+/* Overlay darkening — opacity only (compositor layer) */
+.ot-card-dark {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: rgba(0,0,0,0.22);
+  opacity: 0; transition: opacity .4s ease;
+}
+.ot-member:hover .ot-card-dark { opacity: 1; }
+
+/* Gradient — always present, base readability */
+.ot-card-grad {
+  position: absolute; inset: 0; z-index: 2; pointer-events: none;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.32) 0%, rgba(0,0,0,0.48) 40%, rgba(0,0,0,0.95) 100%);
+}
+
+/* Radial accent glow on hover */
+.ot-card-glow {
+  position: absolute; inset: 0; z-index: 2; pointer-events: none;
+  background: radial-gradient(ellipse at bottom left, rgba(255,171,66,0.12), transparent 60%);
+  opacity: 0; transition: opacity .5s ease;
+}
+.ot-member:hover .ot-card-glow { opacity: 1; }
+
+/* HUD top accent line */
+.ot-hud-line {
+  position: absolute; top: 0; left: 0; right: 0; height: 2px; z-index: 10; pointer-events: none;
+  background: linear-gradient(90deg, transparent, #ffab42 38%, #ff636f 62%, transparent);
+  opacity: 0; transition: opacity .3s ease;
+  box-shadow: 0 0 18px rgba(255,171,66,0.5);
+}
+.ot-member:hover .ot-hud-line { opacity: 1; }
+
+/* Border ring */
+.ot-card-ring {
+  position: absolute; inset: 0; z-index: 10; pointer-events: none;
+  clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px);
+  border: 2px solid transparent;
+  transition: border-color .4s ease;
+}
+.ot-member:hover .ot-card-ring { border-color: rgba(255,171,66,0.35); }
+
+/* Expanding accent bar */
+.ot-accent-bar {
+  height: 2px; width: 24px;
+  background: linear-gradient(to right, #ffab42, #ff636f);
+  clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%);
+  transition: width .4s ease;
+  margin-bottom: 20px;
+}
+.ot-member:hover .ot-accent-bar { width: 64px; }
+
+/* Name — colour transition via CSS (no gradient transition) */
+.ot-member-name {
+  font-size: clamp(1.4rem, 2.5vw, 1.875rem);
+  font-weight: 700; letter-spacing: -.02em; line-height: 1.1;
+  color: rgba(255,255,255,0.97);
+  transition: color .4s ease;
+  margin-bottom: 12px;
+  transform: translateY(4px);
+  transition: color .4s ease, transform .4s ease;
+}
+.ot-member:hover .ot-member-name {
+  color: #ffab42;
+  transform: translateY(0);
+}
+
+/* Bio + socials — slide in on hover */
+.ot-reveal {
+  opacity: 0; transform: translateY(8px);
+  transition: opacity .35s ease .05s, transform .35s ease .05s;
+}
+.ot-member:hover .ot-reveal { opacity: 1; transform: translateY(0); }
+
+.ot-socials-row {
+  opacity: 0; transform: translateY(8px);
+  transition: opacity .35s ease .1s, transform .35s ease .1s;
+}
+.ot-member:hover .ot-socials-row { opacity: 1; transform: translateY(0); }
+
+/* Under-glow */
+.ot-underglow {
+  position: absolute; inset: -8px; z-index: -1; border-radius: 9999px;
+  background: radial-gradient(ellipse, rgba(255,171,66,0.18), transparent 70%);
+  opacity: 0; transition: opacity .7s ease;
+  pointer-events: none;
+}
+.ot-member:hover .ot-underglow { opacity: 1; }
+
+/* ── CTA panel ───────────────────────────── */
+.ot-cta-panel {
+  position: relative; overflow: hidden;
+}
+.ot-cta-top {
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(to right, transparent, rgba(255,171,66,0.6), transparent);
+}
+.ot-cta-bottom {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(to right, transparent, rgba(255,99,111,0.6), transparent);
+}
+
+/* ── Reduced motion ──────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .ot-float, .ot-float-delay, .ot-pulse-glow, .ot-shimmer {
+    animation: none !important;
+  }
+  .ot-card, .ot-card-img, .ot-card-dark, .ot-card-glow,
+  .ot-hud-line, .ot-card-ring, .ot-accent-bar,
+  .ot-member-name, .ot-reveal, .ot-socials-row, .ot-underglow {
+    transition: none !important;
+  }
+}
