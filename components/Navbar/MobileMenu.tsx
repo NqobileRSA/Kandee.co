@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { glass, diamondClip, GRAD } from "./navStyles";
 import { NAV_LINKS } from "./navConstants";
+import "./MobileMenu.css";
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -178,33 +179,20 @@ export default function MobileMenu({
                     </a>
                     {hasDropdown && (
                       <button
+                        type="button"
                         onClick={() =>
                           setActiveDropdown(isDropOpen ? null : link.name)
                         }
-                        className="nav-clip-xs"
-                        style={{
-                          ...glass,
-                          width: 36,
-                          height: 36,
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          border: "none",
-                          cursor: "pointer",
-                          fontFamily: "inherit",
-                          flexShrink: 0,
-                          transition: "all 0.2s",
-                        }}
+                        className="nav-clip-xs dropdown-toggle-btn"
+                        title={`Toggle ${link.name} menu`}
+                        aria-label={`Toggle ${link.name} submenu`}
                       >
                         <ChevronDown
+                          className="dropdown-chevron"
                           style={{
-                            width: 16,
-                            height: 16,
-                            color: "#ffab42",
                             transform: isDropOpen
                               ? "rotate(180deg)"
                               : "rotate(0deg)",
-                            transition: "transform 0.3s",
                           }}
                         />
                       </button>

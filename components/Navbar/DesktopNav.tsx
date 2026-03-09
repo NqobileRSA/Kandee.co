@@ -75,8 +75,8 @@ export default function DesktopNav({
                   const el = e.currentTarget;
                   el.style.color = "transparent";
                   el.style.background = GRAD;
-                  el.style.WebkitBackgroundClip = "text";
-                  el.style.WebkitTextFillColor = "transparent";
+                  el.style.webkitBackgroundClip = "text";
+                  el.style.webkitTextFillColor = "transparent";
                   el.style.backgroundClip = "text";
                 }
               }}
@@ -85,7 +85,7 @@ export default function DesktopNav({
                   const el = e.currentTarget;
                   el.style.color = "rgba(255,255,255,0.65)";
                   el.style.background = "transparent";
-                  el.style.WebkitTextFillColor = "";
+                  el.style.webkitTextFillColor = "";
                 }
               }}
             >
