@@ -8,7 +8,9 @@ import { useState, useRef } from "react";
 import { Play, Pause, CheckCircle2, Sparkles, Package } from "lucide-react";
 import { SERVICES } from "./servicesConstants";
 
-interface Props { serviceIndex: number; }
+interface Props {
+  serviceIndex: number;
+}
 
 export default function ServiceDetail({ serviceIndex }: Props) {
   const s = SERVICES[serviceIndex];
@@ -18,21 +20,27 @@ export default function ServiceDetail({ serviceIndex }: Props) {
   const toggle = () => {
     const v = videoRef.current;
     if (!v) return;
-    if (playing) { v.pause(); setPlaying(false); }
-    else         { v.play();  setPlaying(true);  }
+    if (playing) {
+      v.pause();
+      setPlaying(false);
+    } else {
+      v.play();
+      setPlaying(true);
+    }
   };
 
   return (
     <div className="grid lg:grid-cols-[1.2fr_0.8fr] gap-12 lg:gap-16">
-
       {/* ── Video ── */}
       <div className="relative">
         <div className="sv-video-wrap sv-clip-card group">
           <video
             ref={videoRef}
-            key={s.id}               /* force remount on service switch */
+            key={s.id} /* force remount on service switch */
             src={s.videoSrc}
-            loop muted playsInline
+            loop
+            muted
+            playsInline
             className="w-full h-full object-cover"
             style={{ filter: "contrast(1.15) brightness(0.85)" }}
             aria-label={`${s.title} showreel`}
@@ -51,7 +59,7 @@ export default function ServiceDetail({ serviceIndex }: Props) {
                 className="relative w-20 h-20 flex items-center justify-center sv-clip-play
                            transition-transform duration-500 group-hover/play:scale-110
                            shadow-[0_20px_60px_-10px_rgba(255,107,0,0.6)]"
-                style={{ background: `linear-gradient(135deg, ${s.accentFrom}, ${s.accentTo})`, border: "1px solid rgba(255,255,255,0.25)" }}
+                style={{ background: s.accentColor, border: "1px solid rgba(255,255,255,0.25)" }}
               >
                 <Play className="w-10 h-10 text-white ml-1" />
                 <div className="absolute inset-0 border-2 border-white/35 sv-pulse-glow sv-clip-play" aria-hidden />
@@ -86,7 +94,7 @@ export default function ServiceDetail({ serviceIndex }: Props) {
         {/* Ambient glow */}
         <div
           className="absolute -inset-6 -z-10 blur-3xl opacity-15"
-          style={{ background: `radial-gradient(ellipse, ${s.accentFrom}55, transparent 70%)` }}
+          style={{ background: `radial-gradient(ellipse, ${s.accentColor}55, transparent 70%)` }}
           aria-hidden
         />
       </div>
@@ -98,7 +106,7 @@ export default function ServiceDetail({ serviceIndex }: Props) {
           <div className="sv-glass sv-clip-badge inline-flex items-center gap-2 px-4 py-2 mb-4">
             <div
               className="w-2 h-2 sv-pulse-glow flex-shrink-0"
-              style={{ background: `linear-gradient(135deg, ${s.accentFrom}, ${s.accentTo})`, clipPath: "polygon(50% 0%,100% 50%,50% 100%,0% 50%)" }}
+              style={{ background: s.accentColor, clipPath: "polygon(50% 0%,100% 50%,50% 100%,0% 50%)" }}
               aria-hidden
             />
             <span className="text-[10px] text-white/65 font-bold tracking-[0.25em]">{s.tagline}</span>
@@ -134,7 +142,10 @@ export default function ServiceDetail({ serviceIndex }: Props) {
           </h3>
           <div className="flex flex-wrap gap-2">
             {s.deliverables.map((d) => (
-              <span key={d} className="sv-glass sv-clip-badge px-3 py-1.5 text-xs text-white/60 font-medium hover:text-white/90 transition-colors duration-200">
+              <span
+                key={d}
+                className="sv-glass sv-clip-badge px-3 py-1.5 text-xs text-white/60 font-medium hover:text-white/90 transition-colors duration-200"
+              >
                 {d}
               </span>
             ))}

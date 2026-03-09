@@ -10,7 +10,7 @@
  */
 import "./ourStory.css";
 import SectionLabel from "@/components/ui/SectionLabel";
-import StoryVideo    from "./StoryVideo";
+import StoryVideo from "./StoryVideo";
 import MilestonesGrid from "./MilestonesGrid";
 import { PHILOSOPHY_TAGS } from "./ourStoryConstants";
 
@@ -19,7 +19,6 @@ export default function OurStory() {
     <section className="bg-[#0d0d0d] text-white overflow-x-hidden">
       <div className="w-full px-5 md:px-8 lg:px-12 xl:px-16 pb-20 md:pb-32 lg:pb-40">
         <div className="space-y-24 md:space-y-36">
-
           {/* ══ 1. CINEMATIC VIDEO ═══════════════════════════ */}
           <div className="relative group">
             <StoryVideo />
@@ -33,7 +32,7 @@ export default function OurStory() {
 
           {/* ══ 2. PHILOSOPHY QUOTE ══════════════════════════ */}
           <div className="os-glass-strong os-clip-card os-philosophy">
-            <div className="os-philosophy-accent-top"  aria-hidden />
+            <div className="os-philosophy-accent-top" aria-hidden />
             <div className="os-philosophy-accent-bottom" aria-hidden />
 
             {/* Radial glow */}
@@ -44,7 +43,6 @@ export default function OurStory() {
             />
 
             <div className="relative z-10 px-10 md:px-20 lg:px-32 py-16 md:py-24 grid lg:grid-cols-[1fr_2px_1fr] gap-10 lg:gap-16 items-center">
-
               {/* Left: quote */}
               <div>
                 {/* Diamond decorator */}
@@ -54,7 +52,7 @@ export default function OurStory() {
                     className="w-2 h-2 bg-gradient-to-r from-[#ffab42] to-[#ff636f]"
                     style={{ clipPath: "polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)" }}
                   />
-                  <div className="h-px w-10 bg-gradient-to-r from-[#ff636f] to-transparent" />
+                  <div className="h-px w-10 bg-linear-to-r from-[#ff636f] to-transparent" />
                 </div>
 
                 <blockquote className="text-2xl md:text-3xl lg:text-4xl font-bold leading-[1.25] mb-8">
@@ -64,16 +62,12 @@ export default function OurStory() {
                   <span className="bg-gradient-to-r from-[#ffab42] to-[#ff636f] bg-clip-text text-transparent">
                     artistry and authenticity
                   </span>
-                  <span className="bg-gradient-to-br from-white via-white to-white/70 bg-clip-text text-transparent">
-                    ."
-                  </span>
+                  <span className="bg-gradient-to-br from-white via-white to-white/70 bg-clip-text text-transparent">."</span>
                 </blockquote>
 
                 <div className="os-glass inline-flex items-center gap-3 px-5 py-3 os-clip-badge">
                   <div className="w-1.5 h-1.5 rounded-full bg-[#ffab42] os-pulse-glow flex-shrink-0" />
-                  <span className="text-xs font-bold tracking-widest text-white/60 uppercase">
-                    Our Belief
-                  </span>
+                  <span className="text-xs font-bold tracking-widest text-white/60 uppercase">Our Belief</span>
                 </div>
               </div>
 
@@ -83,13 +77,11 @@ export default function OurStory() {
               {/* Right: mission */}
               <div className="space-y-6">
                 <p className="text-base md:text-lg text-white/65 font-light leading-relaxed">
-                  Our mission is to create timeless photographs and films that tell your unique
-                  story — preserving memories with cutting-edge excellence that will be cherished
-                  for generations.
+                  Our mission is to create timeless photographs and films that tell your unique story — preserving memories with
+                  cutting-edge excellence that will be cherished for generations.
                 </p>
                 <p className="text-base md:text-lg text-white/65 font-light leading-relaxed">
-                  Every project is approached with the same care and intention: to make something
-                  truly extraordinary out of the everyday.
+                  Every project is approached with the same care and intention: to make something truly extraordinary out of the everyday.
                 </p>
                 <div className="flex flex-wrap gap-2 pt-2">
                   {PHILOSOPHY_TAGS.map((tag) => (
@@ -112,7 +104,6 @@ export default function OurStory() {
 
             <MilestonesGrid />
           </div>
-
         </div>
       </div>
     </section>

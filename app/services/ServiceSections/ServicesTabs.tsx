@@ -56,21 +56,11 @@ export default function ServicesTabs() {
             <button
               key={s.id}
               onClick={() => switchTab(i)}
-              className={`sv-tab sv-clip-button px-6 py-3 flex flex-col gap-2 ${
-                isActive ? "sv-tab-active sv-glass-strong" : "sv-glass"
-              }`}
+              className={`sv-tab sv-clip-button px-6 py-3 flex flex-col gap-2 ${isActive ? "sv-tab-active sv-glass-strong" : "sv-glass"}`}
             >
               <div className="flex items-center gap-3">
-                <Icon
-                  className={`w-5 h-5 transition-colors duration-300 ${
-                    isActive ? "text-[#ffab42]" : "text-white/55"
-                  }`}
-                />
-                <span
-                  className={`font-semibold text-sm transition-colors duration-300 ${
-                    isActive ? "text-white" : "text-white/65"
-                  }`}
-                >
+                <Icon className={`w-5 h-5 transition-colors duration-300 ${isActive ? "text-[#ffab42]" : "text-white/55"}`} />
+                <span className={`font-semibold text-sm transition-colors duration-300 ${isActive ? "text-white" : "text-white/65"}`}>
                   {s.title}
                 </span>
               </div>
@@ -82,15 +72,21 @@ export default function ServicesTabs() {
 
       {/* ── Active service detail ─────────────────────────────────── */}
       <div key={active} className="grid lg:grid-cols-[1.25fr_0.75fr] gap-12 lg:gap-16">
-
         {/* Video panel */}
         <div className="relative">
-          <div className="relative overflow-hidden group sv-clip-card shadow-[0_30px_80px_-20px_rgba(0,0,0,0.8)]" style={{ aspectRatio: "16/10" }}>
+          <div
+            className="relative overflow-hidden group sv-clip-card shadow-[0_30px_80px_-20px_rgba(0,0,0,0.8)]"
+            style={{ aspectRatio: "16/10" }}
+          >
             <video
-              ref={(el) => (videoRefs.current[active] = el)}
+              ref={(el) => {
+                if (el) videoRefs.current[active] = el;
+              }}
               src={svc.videoSrc}
               poster={svc.posterSrc}
-              loop muted playsInline
+              loop
+              muted
+              playsInline
               className="w-full h-full object-cover"
               style={{ filter: "contrast(1.12) brightness(0.84)" }}
               aria-label={`${svc.title} showreel`}
@@ -150,8 +146,12 @@ export default function ServicesTabs() {
                 if (!el) return;
                 const wrap = el.parentElement;
                 if (!wrap) return;
-                wrap.addEventListener("mouseenter", () => { el.style.borderColor = "rgba(255,171,66,0.35)"; });
-                wrap.addEventListener("mouseleave", () => { el.style.borderColor = "transparent"; });
+                wrap.addEventListener("mouseenter", () => {
+                  el.style.borderColor = "rgba(255,171,66,0.35)";
+                });
+                wrap.addEventListener("mouseleave", () => {
+                  el.style.borderColor = "transparent";
+                });
               }}
             />
           </div>
@@ -204,7 +204,10 @@ export default function ServicesTabs() {
             </h3>
             <div className="flex flex-wrap gap-2">
               {svc.deliverables.map((d) => (
-                <span key={d} className="sv-glass sv-clip-tag px-3 py-2 text-xs text-white/65 hover:text-white/90 transition-colors duration-200">
+                <span
+                  key={d}
+                  className="sv-glass sv-clip-tag px-3 py-2 text-xs text-white/65 hover:text-white/90 transition-colors duration-200"
+                >
                   {d}
                 </span>
               ))}
@@ -223,7 +226,14 @@ export default function ServicesTabs() {
             }}
           >
             <span className="font-bold text-white relative z-10">Enquire About {svc.title}</span>
-            <svg className="w-5 h-5 text-white relative z-10 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
+            <svg
+              className="w-5 h-5 text-white relative z-10 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              aria-hidden
+            >
               <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
             </svg>
             <div className="sv-shimmer absolute inset-0" aria-hidden />
